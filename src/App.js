@@ -1,36 +1,43 @@
 import React, { Component } from "react";
+import Overview from "./components/Overview";
 
 class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      task: "",
+      tasks: [],
+    };
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      task: e.target.value,
+    });
+  };
+
+  onSubmitTask = (e) => {
+    e.preventDefault();
+    this.setState({
+      tasks: this.state.tasks.concat(this.state.task),
+      task: "",
+    });
+  };
+
   render() {
-    return <div>Hello World</div>;
+    const { task, tasks } = this.state;
+
+    return (
+      <div>
+        <form>
+          <input onChange={this.handleChange} value={this.state.task} type="text" id="taskInput" placeholder="Enter task..." />
+          <button onClick={this.onSubmitTask} type="submit">Add Task</button>
+        </form>
+        <Overview tasks={tasks} />
+      </div>
+    )
   }
 }
 
 export default App;
-
-export function taskManager() {
-  let taskList = []
-  function addTask() {
-    const task = document.getElementById('taskInput').innerText;
-    taskList.push(task);
-  }
-  document.getElementById('submitBtn').addEventListener('click', addTask());
-}
-
-export function taskForm() {
-  return (
-    <div>
-      <div>
-        <form>
-          <input type="text" placeholder="Enter task" id="taskInput"></input>
-          <button id="submitBtn">Submit</button>
-        </form>
-      </div>
-      <div>
-        <ol>
-
-        </ol>
-      </div>
-    </div>
-  )
-}
